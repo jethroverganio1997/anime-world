@@ -8,6 +8,7 @@ abstract class HttpService {
   Future<dynamic> get(
     String endpoint, {
     CancelToken? cancelToken,
+     Map<String, dynamic>? body,
   });
 
   Future<dynamic> post(

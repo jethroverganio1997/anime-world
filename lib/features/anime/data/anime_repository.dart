@@ -1,0 +1,70 @@
+import 'package:animenginamo/core/external/http/api_service.dart';
+import 'package:animenginamo/features/anime/domain/anime_info_model.dart';
+import 'package:animenginamo/features/anime/domain/anime_model.dart';
+import 'package:dio/dio.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+
+import '../../../core/external/http/http_service.dart';
+
+final animeRepoProvider = Provider.autoDispose<AnimeRepository>((ref) {
+  return AnimeRepository(ref.watch(apiServiceProvider));
+});
+
+abstract class AnimeRepository {
+  factory AnimeRepository(HttpService api) = AnimeRepositoryImpl;
+  Future<AnimeInfoModel> getAnimeInfo({required String id, CancelToken? cancelToken});
+  Future<AnimePageModel> getTopAiringAnime({required int page, CancelToken? cancelToken});
+  Future<AnimePageModel> searchAnime({required String keyWord, required int page, CancelToken? cancelToken});
+  Future<AnimePageModel> getRecentEpisodes({required int page, CancelToken? cancelToken});
+}
+
+class AnimeRepositoryImpl implements AnimeRepository {
+  final HttpService _api;
+  AnimeRepositoryImpl(this._api);
+
+  @override
+  Future<AnimeInfoModel> getAnimeInfo({
+    required String id,
+    CancelToken? cancelToken,
+  }) async {
+    final res = await _api.get('info/$id', cancelToken: cancelToken);
+    return AnimeInfoModel.fromJson(res);
+  }
+
+  @override
+  Future<AnimePageModel> getTopAiringAnime({
+    required int page,
+    CancelToken? cancelToken,
+  }) async {
+    final res = await _api.get('top-airing', body: {'page': page}, cancelToken: cancelToken);
+    return AnimePageModel.fromJson(res);
+  }
+
+  @override
+  Future<AnimePageModel> searchAnime({
+    required String keyWord,
+    required int page,
+    CancelToken? cancelToken,
+  }) async {
+    final res = await _api.get(keyWord, body: {'page': page}, cancelToken: cancelToken);
+    return AnimePageModel.fromJson(res);
+  }
+
+  ///Note has an Type query params the default value is 1
+  ///The [type] of anime to get, i.e. sub or dub. 1: Japanese
+  ///Dub, English Sub; 2: English Dub, No Sub; 3: Chinese
+  ///Dub, English Sub.
+  @override
+  Future<AnimePageModel> getRecentEpisodes({
+    required int page,
+    int? type = 1,
+    CancelToken? cancelToken,
+  }) async {
+    final res = await _api.get(
+      'recent-episodes',
+      body: {'page': page, 'type': type},
+      cancelToken: cancelToken,
+    );
+    return AnimePageModel.fromJson(res);
+  }
+}

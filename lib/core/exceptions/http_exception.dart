@@ -34,6 +34,9 @@ class NoInternetConnectionException extends HttpException {
 
   @override
   String get title => 'Internet';
+
+  @override
+  String get description => dioError.toString();
 }
 
 class TimeOutException extends HttpException {
@@ -41,6 +44,9 @@ class TimeOutException extends HttpException {
 
   @override
   String get error => ErrorConst.connectionTimeOutMessage;
+
+  @override
+  String get description => dioError.toString();
 }
 
 class AbortionException extends HttpException {
@@ -48,6 +54,9 @@ class AbortionException extends HttpException {
 
   @override
   String get error => ErrorConst.connectionTimeOutMessage;
+
+  @override
+  String get description => dioError.toString();
 }
 
 class UnhandleException extends HttpException {
@@ -55,13 +64,17 @@ class UnhandleException extends HttpException {
 
   @override
   String get error => ErrorConst.unhandledErrorMessage;
+
+  @override
+  String get description => dioError.toString();
 }
 
 class ApiException extends HttpException {
   ApiException(super.dioError);
 
   @override
-  String get error {
-    return dioError.toString();
-  }
+  String get error => 'Api Error';
+
+  @override
+  String get description => dioError.toString();
 }
