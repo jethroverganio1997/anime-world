@@ -18,7 +18,7 @@ void main() {
         "Get movie info",
         () async {
           //arrange
-          final model = await container.read(animeRepoProvider).getAnimeInfo(id: 'spy-x-family');
+          final model = await container.read(animeRepoProvider).fetchAnimeInfo(id: 'spy-x-family');
           //act
           expect(model, isA<AnimeInfoModel>());
           //assert
@@ -29,31 +29,43 @@ void main() {
         "Get top airing anime",
         () async {
           //arrange
-          final model = await container.read(animeRepoProvider).getTopAiringAnime(page: 3);
+          final model = await container.read(animeRepoProvider).fetchTopAnime(page: 3);
           //act
           expect(model, isA<AnimePageModel>());
           //assert
         },
       );
 
-        test(
+      test(
         "search anime",
         () async {
           //arrange
-          final model = await container.read(animeRepoProvider).searchAnime(keyWord: 'spy', page: 2);
+          final model = await container.read(animeRepoProvider).searchAnime(query: 'spy', page: 2);
           //act
           expect(model, isA<AnimePageModel>());
           //assert
         },
       );
 
-        test(
+      test(
         "get recent anime",
         () async {
           //arrange
-          final model = await container.read(animeRepoProvider).getRecentEpisodes(page: 2);
+          final model = await container.read(animeRepoProvider).fetchRecentEpisodes(page: 2);
           //act
           expect(model, isA<AnimePageModel>());
+          //assert
+        },
+      );
+
+      test(
+        "get repisode stream link",
+        () async {
+          //arrange
+          final model =
+              await container.read(animeRepoProvider).fetchEpisodeStreamingLinks(episodeId: 'spy-x-family-episode-1');
+          //act
+          expect(model, isA<List<AnimeEpisodes>>());
           //assert
         },
       );

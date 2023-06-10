@@ -49,8 +49,8 @@ class TimeOutException extends HttpException {
   String get description => dioError.toString();
 }
 
-class AbortionException extends HttpException {
-  AbortionException(super.dioError);
+class AbortedException extends HttpException {
+  AbortedException(super.dioError);
 
   @override
   String get error => ErrorConst.connectionTimeOutMessage;

@@ -12,7 +12,7 @@ class AnimePageModel with _$AnimePageModel {
   const factory AnimePageModel({
     required String currentPage,
     required bool hasNextPage,
-    required List<Anime> results,
+    @JsonKey(name: 'results') required List<Anime> anime,
   }) = _AnimePageModel;
 
   factory AnimePageModel.fromJson(Map<String, dynamic> json) => _$AnimePageModelFromJson(json);
@@ -31,4 +31,14 @@ class Anime with _$Anime {
   }) = _Anime;
 
   factory Anime.fromJson(Map<String, dynamic> json) => _$AnimeFromJson(json);
+}
+
+@freezed
+class AnimeEpisodes with _$AnimeEpisodes {
+  const factory AnimeEpisodes({
+    required String url,
+    required String quality,
+  }) = _AnimeEpisodes;
+
+  factory AnimeEpisodes.fromJson(Map<String, dynamic> json) => _$AnimeEpisodesFromJson(json);
 }

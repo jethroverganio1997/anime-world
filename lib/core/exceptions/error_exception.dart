@@ -15,7 +15,7 @@ abstract class FailureException implements Failure {
   String get title => 'Error';
 
   @override
-  String get description;
+  String get description => '';
 }
 
 class ErrorDetails extends FailureException {
@@ -32,3 +32,5 @@ class ErrorDetails extends FailureException {
   @override
   final String description;
 }
+
+class AbortException extends FailureException {}

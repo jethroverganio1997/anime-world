@@ -12,10 +12,12 @@ final animeRepoProvider = Provider.autoDispose<AnimeRepository>((ref) {
 
 abstract class AnimeRepository {
   factory AnimeRepository(HttpService api) = AnimeRepositoryImpl;
-  Future<AnimeInfoModel> getAnimeInfo({required String id, CancelToken? cancelToken});
-  Future<AnimePageModel> getTopAiringAnime({required int page, CancelToken? cancelToken});
-  Future<AnimePageModel> searchAnime({required String keyWord, required int page, CancelToken? cancelToken});
-  Future<AnimePageModel> getRecentEpisodes({required int page, CancelToken? cancelToken});
+  Future<AnimeInfoModel> fetchAnimeInfo({required String id, CancelToken? cancelToken});
+  Future<AnimePageModel> fetchTopAnime({required int page, CancelToken? cancelToken});
+  Future<AnimePageModel> searchAnime({required String query, required int page, CancelToken? cancelToken});
+  Future<AnimePageModel> fetchRecentEpisodes({required int page, CancelToken? cancelToken});
+  Future<List<AnimeEpisodes>> fetchEpisodeStreamingLinks(
+      {required String episodeId, String? server, CancelToken? cancelToken});
 }
 
 class AnimeRepositoryImpl implements AnimeRepository {
@@ -23,7 +25,7 @@ class AnimeRepositoryImpl implements AnimeRepository {
   AnimeRepositoryImpl(this._api);
 
   @override
-  Future<AnimeInfoModel> getAnimeInfo({
+  Future<AnimeInfoModel> fetchAnimeInfo({
     required String id,
     CancelToken? cancelToken,
   }) async {
@@ -32,7 +34,7 @@ class AnimeRepositoryImpl implements AnimeRepository {
   }
 
   @override
-  Future<AnimePageModel> getTopAiringAnime({
+  Future<AnimePageModel> fetchTopAnime({
     required int page,
     CancelToken? cancelToken,
   }) async {
@@ -42,11 +44,11 @@ class AnimeRepositoryImpl implements AnimeRepository {
 
   @override
   Future<AnimePageModel> searchAnime({
-    required String keyWord,
+    required String query,
     required int page,
     CancelToken? cancelToken,
   }) async {
-    final res = await _api.get(keyWord, body: {'page': page}, cancelToken: cancelToken);
+    final res = await _api.get(query, body: {'page': page}, cancelToken: cancelToken);
     return AnimePageModel.fromJson(res);
   }
 
@@ -55,7 +57,7 @@ class AnimeRepositoryImpl implements AnimeRepository {
   ///Dub, English Sub; 2: English Dub, No Sub; 3: Chinese
   ///Dub, English Sub.
   @override
-  Future<AnimePageModel> getRecentEpisodes({
+  Future<AnimePageModel> fetchRecentEpisodes({
     required int page,
     int? type = 1,
     CancelToken? cancelToken,
@@ -66,5 +68,21 @@ class AnimeRepositoryImpl implements AnimeRepository {
       cancelToken: cancelToken,
     );
     return AnimePageModel.fromJson(res);
+  }
+
+  ///[servers] Enum: "gogocdn" "streamsb" "vidstreaming"
+  @override
+  Future<List<AnimeEpisodes>> fetchEpisodeStreamingLinks({
+    required String episodeId,
+    String? server = 'gogocdn',
+    CancelToken? cancelToken,
+  }) async {
+    final res = await _api.get(
+      'watch/$episodeId',
+      body: {'server': server},
+      cancelToken: cancelToken,
+    );
+    final data = res['sources'] as List;
+    return data.map((e) => AnimeEpisodes.fromJson(e)).toList();
   }
 }

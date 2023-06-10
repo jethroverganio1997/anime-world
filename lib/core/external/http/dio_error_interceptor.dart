@@ -2,7 +2,6 @@ import 'package:dio/dio.dart';
 
 import '../../exceptions/http_exception.dart';
 
-
 class DioErrorInterceptor extends Interceptor {
   @override
   void onError(DioException err, ErrorInterceptorHandler handler) {
@@ -14,7 +13,7 @@ class DioErrorInterceptor extends Interceptor {
       case DioExceptionType.badResponse:
         throw ApiException(err);
       case DioExceptionType.cancel:
-        throw AbortionException(err);
+        throw AbortedException(err);
       case DioExceptionType.connectionError:
         throw NoInternetConnectionException(err);
       default:

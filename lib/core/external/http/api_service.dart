@@ -42,7 +42,7 @@ class ApiService implements HttpService {
   @override
   Future<dynamic> get(String endpoint, {CancelToken? cancelToken, Map<String, dynamic>? body}) async {
     try {
-      final Response response = await dio.get(endpoint, queryParameters: body, cancelToken: cancelToken);
+      final Response response = await dio.get(endpoint, queryParameters: body, cancelToken: cancelToken,);
       return response.data;
     } on DioException catch (_) {
       rethrow;

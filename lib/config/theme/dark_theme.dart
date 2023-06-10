@@ -6,12 +6,12 @@ import 'package:google_fonts/google_fonts.dart';
 
 import 'color_schemes.g.dart';
 
-class CustomDarkTheme {
-  static ThemeData darkTheme(BuildContext context) {
+class CustomTheme {
+  static ThemeData darkTheme(BuildContext context, ColorScheme imageColorScheme) {
     return ThemeData(
-      colorScheme: darkColorScheme,
+      colorScheme: imageColorScheme,
       useMaterial3: true,
-      scaffoldBackgroundColor: darkColorScheme.background.blend(darkColorScheme.surfaceTint, 5),
+      scaffoldBackgroundColor: imageColorScheme.background,
       buttonTheme: const ButtonThemeData(
         padding: EdgeInsets.symmetric(horizontal: Sizes.padding24),
         height: Sizes.buttonHeight,
@@ -23,7 +23,7 @@ class CustomDarkTheme {
       ),
       iconButtonTheme: IconButtonThemeData(
         style: IconButton.styleFrom(
-          foregroundColor: darkColorScheme.surfaceVariant,
+          foregroundColor: imageColorScheme.surfaceVariant,
         ),
       ),
       cardTheme: CardTheme(
@@ -32,10 +32,10 @@ class CustomDarkTheme {
           borderRadius: BorderRadius.circular(Sizes.radius20),
         ),
       ),
-      dividerColor: darkColorScheme.outlineVariant,
-      dialogTheme: const DialogTheme(
+      dividerColor: imageColorScheme.outlineVariant,
+      dialogTheme: DialogTheme(
         elevation: 3,
-        // backgroundColor: _darkCustomColorScheme.surfaceContainerHigh,
+        backgroundColor: imageColorScheme.surface.blend(imageColorScheme.surfaceTint, 11),
       ),
       //   appBarTheme: AppBarTheme(
       //     color: _darkCustomColorScheme.surfaceContainerLow,
@@ -43,9 +43,9 @@ class CustomDarkTheme {
       scrollbarTheme: ScrollbarThemeData(
         thickness: const MaterialStatePropertyAll(4),
         thumbVisibility: const MaterialStatePropertyAll(true),
-        trackColor: MaterialStatePropertyAll(darkColorScheme.primary),
-        thumbColor: MaterialStatePropertyAll(darkColorScheme.primary),
-        trackBorderColor: MaterialStatePropertyAll(darkColorScheme.primary),
+        trackColor: MaterialStatePropertyAll(imageColorScheme.primary),
+        thumbColor: MaterialStatePropertyAll(imageColorScheme.primary),
+        trackBorderColor: MaterialStatePropertyAll(imageColorScheme.primary),
       ),
       visualDensity: VisualDensity.standard,
       inputDecorationTheme: const InputDecorationTheme(
@@ -54,15 +54,15 @@ class CustomDarkTheme {
         contentPadding: EdgeInsets.symmetric(horizontal: Sizes.padding12),
       ),
       floatingActionButtonTheme: FloatingActionButtonThemeData(
-        backgroundColor: darkColorScheme.secondaryContainer,
-        foregroundColor: darkColorScheme.onSecondaryContainer,
+        backgroundColor: imageColorScheme.secondaryContainer,
+        foregroundColor: imageColorScheme.onSecondaryContainer,
       ),
       textTheme: _textTheme(
         bodyColor: lightColorScheme.surface,
-        surfaceTint: darkColorScheme.surfaceTint,
+        surfaceTint: imageColorScheme.surfaceTint,
       ),
       primaryTextTheme: _textTheme(
-        bodyColor: darkColorScheme.surface,
+        bodyColor: imageColorScheme.surface,
         surfaceTint: lightColorScheme.surfaceTint,
       ),
       fontFamily: GoogleFonts.roboto().fontFamily,
@@ -77,7 +77,7 @@ class CustomDarkTheme {
         headlineMedium: TextStyle(fontSize: 28, color: bodyColor.blend(surfaceTint, 30)),
         headlineSmall: const TextStyle(fontSize: 24),
         titleLarge: const TextStyle(fontSize: 22),
-        titleMedium: const TextStyle(fontSize: 16),
+        titleMedium: const TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
         titleSmall: const TextStyle(fontSize: 14),
         bodyLarge: const TextStyle(fontSize: 16),
         bodyMedium: const TextStyle(fontSize: 14),
